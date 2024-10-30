@@ -1,13 +1,16 @@
 //子コンポーネント(multi/page.tsxが親コンポーネント)
-// import React from "react";
-import React, { useState } from "react";
-// type Props = {
-//   suit: string;
-// };
+import React from "react";
 
-const Card = () => {
-  const [suit, setSuit] = useState(" ");
-  const [number, setNumber] = useState(" ");
+type CardProps = {
+  suit: string;
+  setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
+  number: string;
+  setNumber: React.Dispatch<React.SetStateAction<string>>;
+};
+const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
+  //({ suit, setSuit, number, setNumber })親コンポーネントから引き渡される
+  //   const [suit, setSuit] = useState(" ");
+  //   const [number, setNumber] = useState(" ");
   const handleSuitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSuit(event.target.value); // 選択されたスーツに更新
   };
