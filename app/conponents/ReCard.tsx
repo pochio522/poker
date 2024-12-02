@@ -1,3 +1,4 @@
+//Card.tsxのカードとプルダウンの配置を逆にしたもの
 //子コンポーネント(multi/page.tsxが親コンポーネント)
 import React from "react";
 
@@ -7,7 +8,7 @@ type CardProps = {
   number: string;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
 };
-const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
+const ReCard = ({ suit, setSuit, number, setNumber }: CardProps) => {
   //({ suit, setSuit, number, setNumber })親コンポーネントから引き渡される
   //   const [suit, setSuit] = useState(" ");
   //   const [number, setNumber] = useState(" ");
@@ -19,6 +20,17 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
   };
   return (
     <div className="flex flex-col items-center">
+      <div className="w-32 h-48 bg-white border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-between p-4 relative">
+        <div className="absolute top-2 left-2 flex flex-col items-center">
+          <span className="text-3xl font-bold">{number}</span>
+          <span className="text-3xl">{suit}</span>
+        </div>
+        <div className="text-9xl">{suit}</div>
+        <div className="absolute bottom-2 right-2 flex flex-col items-center transform rotate-180">
+          <span className="text-3xl font-bold">{number}</span>
+          <span className="text-3xl">{suit}</span>
+        </div>
+      </div>
       {/* スート選択用のプルダウン */}
       <label htmlFor="suit" className="mb-1">
         スートの選択:
@@ -62,7 +74,7 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
         <option value="3">3</option>
         <option value="2">2</option>
       </select>
-      <div className="w-32 h-48 bg-white border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-between p-4 relative">
+      {/* <div className="w-32 h-48 bg-white border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-between p-4 relative">
         <div className="absolute top-2 left-2 flex flex-col items-center">
           <span className="text-3xl font-bold">{number}</span>
           <span className="text-3xl">{suit}</span>
@@ -72,9 +84,9 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
           <span className="text-3xl font-bold">{number}</span>
           <span className="text-3xl">{suit}</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default Card;
+export default ReCard;
