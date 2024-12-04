@@ -1,7 +1,6 @@
 "use client"; //usestateを使うために必要
 import React, { useState } from "react";
 import Card from "../conponents/Card"; //includeみたいなもん Cardという関数を使えるようにする感じ
-import ReCard from "../conponents/ReCard";
 const Page = () => {
   const [suit1, setSuit1] = useState(" "); //自分の1枚目のカード
   const [number1, setNumber1] = useState(" ");
@@ -49,6 +48,7 @@ const Page = () => {
           setSuit={setSuit1}
           number={number1}
           setNumber={setNumber1}
+          isUP={true}
         />
         {/* 自分の2枚目のカード*/}
         <Card
@@ -56,6 +56,7 @@ const Page = () => {
           setSuit={setSuit2}
           number={number2}
           setNumber={setNumber2}
+          isUP={true}
         />
 
         <div
@@ -71,6 +72,7 @@ const Page = () => {
           setSuit={EnesetSuit1}
           number={Enenumber1}
           setNumber={EnesetNumber1}
+          isUP={true}
         />
         {/* 相手の2枚目のカード*/}
         <Card
@@ -78,6 +80,7 @@ const Page = () => {
           setSuit={EnesetSuit2}
           number={Enenumber2}
           setNumber={EnesetNumber2}
+          isUP={true}
         />
       </div>
       <div //ボードの5枚
@@ -88,39 +91,45 @@ const Page = () => {
           margin: "40px",
         }}
       >
-        <ReCard
+        {/* ボードの1枚目のカード*/}
+        <Card
           suit={Boardsuit1}
           setSuit={BoardsetSuit1}
           number={Boardnumber1}
           setNumber={BoardsetNumber1}
+          isUP={false}
         />
         {/* ボードの2枚目のカード*/}
-        <ReCard
+        <Card
           suit={Boardsuit2}
           setSuit={BoardsetSuit2}
           number={Boardnumber2}
           setNumber={BoardsetNumber2}
+          isUP={false}
         />
         {/* ボードの3枚目のカード*/}
-        <ReCard
+        <Card
           suit={Boardsuit3}
           setSuit={BoardsetSuit3}
           number={Boardnumber3}
           setNumber={BoardsetNumber3}
+          isUP={false}
         />
         {/* ボードの4枚目のカード*/}
-        <ReCard
+        <Card
           suit={Boardsuit4}
           setSuit={BoardsetSuit4}
           number={Boardnumber4}
           setNumber={BoardsetNumber4}
+          isUP={false}
         />
         {/* ボードの5枚目のカード*/}
-        <ReCard
+        <Card
           suit={Boardsuit5}
           setSuit={BoardsetSuit5}
           number={Boardnumber5}
           setNumber={BoardsetNumber5}
+          isUP={false}
         />
       </div>
     </div>

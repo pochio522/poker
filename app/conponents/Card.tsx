@@ -6,8 +6,9 @@ type CardProps = {
   setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
   number: string;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
+  isUP: boolean; //bool型
 };
-const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
+const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
   //({ suit, setSuit, number, setNumber })親コンポーネントから引き渡される
   //   const [suit, setSuit] = useState(" ");
   //   const [number, setNumber] = useState(" ");
@@ -17,11 +18,12 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
   const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNumber(event.target.value); // 選択された数字に更新
   };
-  return (
-    <div className="flex flex-col items-center">
-      {/* スート選択用のプルダウン */}
-      <label htmlFor="suit" className="mb-1">
-        スートの選択:
+  const cardoption = (
+    <div>
+      {/*スート選択用のプルダウン*/}
+      <label htmlFor="suit" className="block mb-1">
+        {" "}
+        {/*blockはlabelのタグを塊とみる*/} スートの選択:
       </label>
       <select
         name="suit"
@@ -37,7 +39,7 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
         <option value="♣">♣</option>
       </select>
       {/* 数字選択用のプルダウン */}
-      <label htmlFor="number" className="mb-1">
+      <label htmlFor="number" className="block mb-1">
         数字の選択:
       </label>
       <select
@@ -62,6 +64,10 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
         <option value="3">3</option>
         <option value="2">2</option>
       </select>
+    </div>
+  );
+  const carddesign = //カードの表示
+    (
       <div className="w-32 h-48 bg-white border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-between p-4 relative">
         <div className="absolute top-2 left-2 flex flex-col items-center">
           <span className="text-3xl font-bold">{number}</span>
@@ -73,6 +79,24 @@ const Card = ({ suit, setSuit, number, setNumber }: CardProps) => {
           <span className="text-3xl">{suit}</span>
         </div>
       </div>
+    );
+  return (
+    <div className="flex flex-col items-center">
+      {isUP ? (
+        <div>
+          {" "}
+          {/*trueの時に選択を上に表示*/}
+          {cardoption}
+          {carddesign}
+        </div>
+      ) : (
+        <div>
+          {" "}
+          {/*falseの時に選択を下に表示*/}
+          {carddesign}
+          {cardoption}
+        </div>
+      )}
     </div>
   );
 };
