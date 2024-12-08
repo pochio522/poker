@@ -2,9 +2,13 @@ import Image from "next/image";
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { supabase } from "../utils/supabase";
 import "./globals.css";
 
-export default function Home() {
+export default async function Home() {
+  const { data: card, error } = await supabase.from("card").select("*");
+  console.log(card);
+
   return (
     <div className="flex gap-4 mx-4">
       <div className="w-1/2 flex flex-col gap-1">
