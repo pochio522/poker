@@ -1,13 +1,31 @@
-import Image from "next/image";
-
-import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { supabase } from "../utils/supabase";
-import "./globals.css";
 
 export default async function Home() {
-  const { data: card, error } = await supabase.from("card").select("*");
+  // let { data: test2, error } = await supabase.from("test2").select("*");
+
+  // let { data: test, error } = await supabase.from("test").select("*");
+
+  // let { data: card, error } = await supabase.from("card").select("*");
+
+  let { data: card, error } = await supabase //データべースから持ってきた値がcardかerrorに入る
+    .from("card")
+    .select("*")
+    .eq("is_on_table", 0);
   console.log(card);
+
+  // const upsertData = card.map((card) => ({
+  //   id: card.id, // 更新対象を指定するためにIDを利用
+  //   is_on_table: true, // 更新する値
+  // }));
+
+  // const { error: upsertError } = await supabase
+  //   .from("card")
+  //   .upsert(upsertData, { onConflict: "id" }); // idを基に更新
+  // if (upsertError) {
+  //   console.error("Error during upsert:", upsertError);
+  //   return <div>Error during upsert</div>;
+  // }
+  // console.log("Upsert completed");
 
   return (
     <div className="flex gap-4 mx-4">
