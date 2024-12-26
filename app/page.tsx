@@ -1,31 +1,20 @@
+"use client";
+import { useEffect } from "react";
 import { supabase } from "../utils/supabase";
 
 export default async function Home() {
-  // let { data: test2, error } = await supabase.from("test2").select("*");
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: card, error } = await supabase.from("card").select("*");
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        console.log(card);
+      }
+    };
 
-  // let { data: test, error } = await supabase.from("test").select("*");
-
-  // let { data: card, error } = await supabase.from("card").select("*");
-
-  let { data: card, error } = await supabase //データべースから持ってきた値がcardかerrorに入る
-    .from("card")
-    .select("*")
-    .eq("is_on_table", 0);
-  console.log(card);
-
-  // const upsertData = card.map((card) => ({
-  //   id: card.id, // 更新対象を指定するためにIDを利用
-  //   is_on_table: true, // 更新する値
-  // }));
-
-  // const { error: upsertError } = await supabase
-  //   .from("card")
-  //   .upsert(upsertData, { onConflict: "id" }); // idを基に更新
-  // if (upsertError) {
-  //   console.error("Error during upsert:", upsertError);
-  //   return <div>Error during upsert</div>;
-  // }
-  // console.log("Upsert completed");
+    fetchData();
+  }, []);
 
   return (
     <div className="flex gap-4 mx-4">
