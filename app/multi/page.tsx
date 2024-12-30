@@ -83,14 +83,6 @@ const Page = () => {
     }
 
     const myCards = [suit1 + number1, suit2 + number2];
-    const enemyCards =
-      //相手のカードが選択されている場合
-      Enesuit1 !== " " &&
-      Enenumber1 !== " " &&
-      Enesuit2 !== " " &&
-      Enenumber2 !== " "
-        ? [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2]
-        : [];
     const boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
@@ -103,12 +95,35 @@ const Page = () => {
     const totalSimulations = 1000;
     let myWins = 0;
 
-    const remainingCards = await supabase
+    const { data: remainingCards, error } = await supabase
       .from("card")
       .select("*")
       .eq("is_on_table", false);
 
+    if (error) {
+      console.error("Error fetching remaining cards:", error);
+      return;
+    }
+
     for (let i = 0; i < totalSimulations; i++) {
+      let enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
+
+      // 相手のカードが選択されていない場合、ランダムに選択
+      if (
+        Enesuit1 === " " ||
+        Enenumber1 === " " ||
+        Enesuit2 === " " ||
+        Enenumber2 === " "
+      ) {
+        const shuffledCards = [...remainingCards].sort(
+          () => 0.5 - Math.random()
+        );
+        enemyCards = [
+          shuffledCards.pop().suit + shuffledCards.pop().number,
+          shuffledCards.pop().suit + shuffledCards.pop().number,
+        ];
+      }
+
       const myHandStrength = evaluateHand([...myCards, ...boardCards]);
       const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
 
