@@ -33,10 +33,10 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         value={suit}
       >
         <option value="">--スートの選択--</option>
-        <option value="♠">♠</option>
-        <option value="♥">♥</option>
-        <option value="♦">♦</option>
-        <option value="♣">♣</option>
+        <option value="♠︎">♠</option>
+        <option value="♥︎">♥</option>
+        <option value="♦︎">♦</option>
+        <option value="♣︎">♣</option>
       </select>
       {/* 数字選択用のプルダウン */}
       <label htmlFor="number" className="block mb-1">
@@ -54,7 +54,7 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         <option value="A">A</option> <option value="K">K</option>
         <option value="Q">Q</option>
         <option value="J">J</option>
-        <option value="T">T</option>
+        <option value="10">10</option>
         <option value="9">9</option>
         <option value="8">8</option>
         <option value="7">7</option>
