@@ -41,21 +41,6 @@ const Page = () => {
     const trimmedSuit = suit.trim();
     const trimmedNumber = number.trim();
 
-    console.log(`Updating card: ${trimmedSuit} ${trimmedNumber}`);
-    CardList.forEach((card) => {
-      console.log(`CardList entry: ${card.suit} ${card.number}`);
-      console.log(
-        `Suit Unicode comparison: ${card.suit.charCodeAt(
-          0
-        )} vs ${trimmedSuit.charCodeAt(0)}`
-      );
-      console.log(
-        `Number Unicode comparison: ${card.number.charCodeAt(
-          0
-        )} vs ${trimmedNumber.charCodeAt(0)}`
-      );
-    });
-
     const cardIndex = CardList.findIndex(
       (card) => card.suit === trimmedSuit && card.number === trimmedNumber
     );
