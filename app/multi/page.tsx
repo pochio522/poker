@@ -104,45 +104,38 @@ const Page = () => {
     for (let i = 0; i < totalSimulations; i++) {
       // Randomly select opponent's hand
       const shuffledCards = [...remainingCards].sort(() => 0.5 - Math.random());
-      const enemyCards = [
-        shuffledCards.pop().suit + shuffledCards.pop().number,
-        shuffledCards.pop().suit + shuffledCards.pop().number,
-      ];
+      const card1 = shuffledCards.pop();
+      const card2 = shuffledCards.pop();
+      if (card1 && card2) {
+        const enemyCards = [
+          card1.suit + card1.number,
+          card2.suit + card2.number,
+        ];
 
-      // Randomly select turn and river cards
-      const turnCard = shuffledCards.pop();
-      const riverCard = shuffledCards.pop();
-      const fullBoard = [
-        ...boardCards,
-        turnCard.suit + turnCard.number,
-        riverCard.suit + riverCard.number,
-      ];
+        // Randomly select turn and river cards
+        const turnCard = shuffledCards.pop();
+        const riverCard = shuffledCards.pop();
+        if (turnCard && riverCard) {
+          const fullBoard = [
+            ...boardCards,
+            turnCard.suit + turnCard.number,
+            riverCard.suit + riverCard.number,
+          ];
 
-      // Evaluate hand strengths
-      const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
-      const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
+          // Evaluate hand strengths
+          const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
+          const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
 
-      if (myHandStrength > enemyHandStrength) {
-        myWins++;
+          if (myHandStrength > enemyHandStrength) {
+            myWins++;
+          }
+        }
       }
     }
 
     // Compute overall win rate
     const winRate = (myWins / totalSimulations) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
-  };
-
-  const generateOpponentHandRange = (remainingCards) => {
-    const handRange = [];
-    for (let i = 0; i < remainingCards.length; i++) {
-      for (let j = i + 1; j < remainingCards.length; j++) {
-        handRange.push([
-          remainingCards[i].suit + remainingCards[i].number,
-          remainingCards[j].suit + remainingCards[j].number,
-        ]);
-      }
-    }
-    return handRange;
   };
 
   const evaluateHand = (cards: string[]) => {
