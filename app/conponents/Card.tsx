@@ -33,9 +33,9 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         value={suit}
       >
         <option value="">--スートの選択--</option>
-        <option value="♠">♠</option>
-        <option value="♥">♥</option>
-        <option value="♦">♦</option>
+        <option value="♠︎">♠</option>
+        <option value="♥︎">♥</option>
+        <option value="♦︎">♦</option>
         <option value="♣︎">♣</option>
       </select>
       {/* 数字選択用のプルダウン */}
