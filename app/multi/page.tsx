@@ -70,8 +70,7 @@ const Page = () => {
   };
 
   const calculateWinRate = async () => {
-    // バリデーション: 必要なカードが揃っているか確認
-
+    // Validate necessary cards
     if (
       !Boardsuit1.trim() ||
       !Boardnumber1.trim() ||
@@ -88,117 +87,68 @@ const Page = () => {
       return;
     }
 
-    //値が入っているものはupdateCardStatusで更新する
-    if (suit1.trim() !== " " && number1.trim() !== " ") {
-      updateCardStatus(suit1, number1);
-    }
-    if (suit2.trim() !== " " && number2.trim() !== " ") {
-      updateCardStatus(suit2, number2);
-    }
-    if (Enesuit1.trim() !== " " && Enenumber1.trim() !== " ") {
-      updateCardStatus(Enesuit1, Enenumber1);
-    }
-    if (Enesuit2.trim() !== " " && Enenumber2.trim() !== " ") {
-      updateCardStatus(Enesuit2, Enenumber2);
-    }
-    if (Boardsuit1.trim() !== " " && Boardnumber1.trim() !== " ") {
-      updateCardStatus(Boardsuit1, Boardnumber1);
-    }
-    if (Boardsuit2.trim() !== " " && Boardnumber2.trim() !== " ") {
-      updateCardStatus(Boardsuit2, Boardnumber2);
-    }
-    if (Boardsuit3.trim() !== " " && Boardnumber3.trim() !== " ") {
-      updateCardStatus(Boardsuit3, Boardnumber3);
-    }
-    if (Boardsuit4.trim() !== " " && Boardnumber4.trim() !== " ") {
-      updateCardStatus(Boardsuit4, Boardnumber4);
-    }
-    if (Boardsuit5.trim() !== " " && Boardnumber5.trim() !== " ") {
-      updateCardStatus(Boardsuit5, Boardnumber5);
-    }
-
-    console.log(CardList);
-
     const myCards = [suit1 + number1, suit2 + number2];
-    let boardCards = [
+    const boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
       Boardsuit3 + Boardnumber3,
     ];
 
-    const totalSimulations = 1000;
-    let myWins = 0;
-
     const remainingCards = CardList.filter(
       (card) => card.is_on_table === false
     );
 
-    for (let i = 0; i < totalSimulations; i++) {
-      let enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
+    let myWins = 0;
+    let totalScenarios = 0;
 
-      if (Enesuit1 === " " || Enenumber1 === " ") {
-        const shuffledCards = [...remainingCards].sort(
-          () => 0.5 - Math.random()
-        );
-        const card1 = shuffledCards.pop();
-        const card2 = shuffledCards.pop();
-        if (card1 && card2) {
-          enemyCards = [card1.suit + card1.number, card2.suit + card2.number];
-        }
+    // Estimate opponent's hand range
+    const opponentHandRange = generateOpponentHandRange(remainingCards);
+
+    // Consider all possible turn and river combinations
+    for (let i = 0; i < remainingCards.length; i++) {
+      for (let j = i + 1; j < remainingCards.length; j++) {
+        const turnCard = remainingCards[i];
+        const riverCard = remainingCards[j];
+
+        const fullBoard = [
+          ...boardCards,
+          turnCard.suit + turnCard.number,
+          riverCard.suit + riverCard.number,
+        ];
+
+        // Calculate win probability for each scenario
+        opponentHandRange.forEach((enemyCards) => {
+          const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
+          const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
+
+          console.log(
+            `My hand strength: ${myHandStrength}, Enemy hand strength: ${enemyHandStrength}`
+          );
+
+          if (myHandStrength > enemyHandStrength) {
+            myWins++;
+          }
+          totalScenarios++;
+        });
       }
-
-      if (Enesuit2 === " " || Enenumber2 === " ") {
-        const shuffledCards = [...remainingCards].sort(
-          () => 0.5 - Math.random()
-        );
-        const card1 = shuffledCards.pop();
-        const card2 = shuffledCards.pop();
-        if (card1 && card2) {
-          enemyCards = [card1.suit + card1.number, card2.suit + card2.number];
-        }
-      }
-
-      if (Boardsuit4 === " " || Boardnumber4 === " ") {
-        const shuffledCards = [...remainingCards].sort(
-          () => 0.5 - Math.random()
-        );
-        const card1 = shuffledCards.pop();
-        const card2 = shuffledCards.pop();
-        if (card1 && card2) {
-          boardCards = [card1.suit + card1.number, card2.suit + card2.number];
-        }
-      }
-
-      if (Boardsuit5 === " " || Boardnumber5 === " ") {
-        const shuffledCards = [...remainingCards].sort(
-          () => 0.5 - Math.random()
-        );
-        const card5 = shuffledCards.pop();
-        if (card5) {
-          boardCards.push(card5.suit + card5.number);
-        }
-      } else {
-        boardCards.push(Boardsuit5 + Boardnumber5);
-      }
-
-      const myHandStrength = evaluateHand([...myCards, ...boardCards]);
-      const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
-
-      if (myHandStrength > enemyHandStrength) {
-        myWins++;
-      }
-
-      // Reset boardCards for the next simulation
-
-      boardCards = [
-        Boardsuit1 + Boardnumber1,
-        Boardsuit2 + Boardnumber2,
-        Boardsuit3 + Boardnumber3,
-      ];
     }
 
-    const winRate = (myWins / totalSimulations) * 100;
+    // Compute overall win rate
+    const winRate = (myWins / totalScenarios) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
+  };
+
+  const generateOpponentHandRange = (remainingCards) => {
+    const handRange = [];
+    for (let i = 0; i < remainingCards.length; i++) {
+      for (let j = i + 1; j < remainingCards.length; j++) {
+        handRange.push([
+          remainingCards[i].suit + remainingCards[i].number,
+          remainingCards[j].suit + remainingCards[j].number,
+        ]);
+      }
+    }
+    return handRange;
   };
 
   const evaluateHand = (cards: string[]) => {
@@ -220,10 +170,15 @@ const Page = () => {
 
     // 手役の判定
     const isFlush = suits.every((suit) => suit === suits[0]);
-    const isStraight = rankValues.every((rank, index) => {
-      if (index === 0) return true;
-      return rank === rankValues[index - 1] + 1;
-    });
+
+    // Check for straight, including the special case of A-2-3-4-5
+    const isStraight =
+      rankValues.every((rank, index) => {
+        if (index === 0) return true;
+        return rank === rankValues[index - 1] + 1;
+      }) ||
+      (rankValues.includes(14) &&
+        rankValues.slice(0, 4).every((rank, index) => rank === index + 2));
 
     const rankCounts = rankValues.reduce(
       (acc: Record<number, number>, rank) => {
