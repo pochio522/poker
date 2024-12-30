@@ -83,15 +83,12 @@ const Page = () => {
     }
 
     const myCards = [suit1 + number1, suit2 + number2];
-    const boardCards = [
+    let boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
       Boardsuit3 + Boardnumber3,
-      Boardsuit4 + Boardnumber4,
-      Boardsuit5 + Boardnumber5,
     ];
 
-    // 簡単なモンテカルロシミュレーションの例
     const totalSimulations = 1000;
     let myWins = 0;
 
@@ -124,12 +121,43 @@ const Page = () => {
         ];
       }
 
+      // ボードの4枚目と5枚目のカードがない場合、ランダムに選択
+      const shuffledBoardCards = [...remainingCards].sort(
+        () => 0.5 - Math.random()
+      );
+
+      if (Boardsuit4 === " " || Boardnumber4 === " ") {
+        const card4 = shuffledBoardCards.pop();
+        if (card4) {
+          boardCards.push(card4.suit + card4.number);
+        }
+      } else {
+        boardCards.push(Boardsuit4 + Boardnumber4);
+      }
+
+      if (Boardsuit5 === " " || Boardnumber5 === " ") {
+        const card5 = shuffledBoardCards.pop();
+        if (card5) {
+          boardCards.push(card5.suit + card5.number);
+        }
+      } else {
+        boardCards.push(Boardsuit5 + Boardnumber5);
+      }
+
       const myHandStrength = evaluateHand([...myCards, ...boardCards]);
       const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
 
       if (myHandStrength > enemyHandStrength) {
         myWins++;
       }
+
+      // Reset boardCards for the next simulation
+
+      boardCards = [
+        Boardsuit1 + Boardnumber1,
+        Boardsuit2 + Boardnumber2,
+        Boardsuit3 + Boardnumber3,
+      ];
     }
 
     const winRate = (myWins / totalSimulations) * 100;
