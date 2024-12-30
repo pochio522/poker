@@ -80,9 +80,6 @@ const Page = () => {
     let myWins = 0;
 
     for (let i = 0; i < totalSimulations; i++) {
-      // ランダムな敵の手札を生成（実際には全ての可能な手札を考慮する必要があります）
-      // const randomEnemyHand = generateRandomHand();
-
       // 手役を評価する（ここでは単純な比較を行います）
       const myHandStrength = evaluateHand([...myCards, ...boardCards]);
       const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
@@ -95,12 +92,6 @@ const Page = () => {
     const winRate = (myWins / totalSimulations) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
   };
-
-  // const generateRandomHand = () => {
-  //   // ランダムな手札を生成するためのプレースホルダー
-  //   // 実際には、デッキからランダムにカードを選ぶ必要があります
-  //   return ["H3", "D4"]; // 例としてハートの3とダイヤの4
-  // };
 
   const evaluateHand = (cards: string[]) => {
     // カードをスートとランクに分ける
