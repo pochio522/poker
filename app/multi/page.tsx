@@ -144,51 +144,51 @@ const Page = () => {
     const totalSimulations = 1000;
     let myWins = 0;
 
-    const { data: remainingCards, error } = await supabase
-      .from("card")
-      .select("*")
-      .eq("is_on_table", false);
-
-    if (error) {
-      console.error("Error fetching remaining cards:", error);
-      return;
-    }
+    const remainingCards = CardList.filter(
+      (card) => card.is_on_table === false
+    );
 
     for (let i = 0; i < totalSimulations; i++) {
       let enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
 
-      // 相手のカードが選択されていない場合、ランダムに選択
-      if (
-        Enesuit1 === " " ||
-        Enenumber1 === " " ||
-        Enesuit2 === " " ||
-        Enenumber2 === " "
-      ) {
+      if (Enesuit1 === " " || Enenumber1 === " ") {
         const shuffledCards = [...remainingCards].sort(
           () => 0.5 - Math.random()
         );
-        enemyCards = [
-          shuffledCards.pop().suit + shuffledCards.pop().number,
-          shuffledCards.pop().suit + shuffledCards.pop().number,
-        ];
+        const card1 = shuffledCards.pop();
+        const card2 = shuffledCards.pop();
+        if (card1 && card2) {
+          enemyCards = [card1.suit + card1.number, card2.suit + card2.number];
+        }
       }
 
-      // ボードの4枚目と5枚目のカードがない場合、ランダムに選択
-      const shuffledBoardCards = [...remainingCards].sort(
-        () => 0.5 - Math.random()
-      );
+      if (Enesuit2 === " " || Enenumber2 === " ") {
+        const shuffledCards = [...remainingCards].sort(
+          () => 0.5 - Math.random()
+        );
+        const card1 = shuffledCards.pop();
+        const card2 = shuffledCards.pop();
+        if (card1 && card2) {
+          enemyCards = [card1.suit + card1.number, card2.suit + card2.number];
+        }
+      }
 
       if (Boardsuit4 === " " || Boardnumber4 === " ") {
-        const card4 = shuffledBoardCards.pop();
-        if (card4) {
-          boardCards.push(card4.suit + card4.number);
+        const shuffledCards = [...remainingCards].sort(
+          () => 0.5 - Math.random()
+        );
+        const card1 = shuffledCards.pop();
+        const card2 = shuffledCards.pop();
+        if (card1 && card2) {
+          boardCards = [card1.suit + card1.number, card2.suit + card2.number];
         }
-      } else {
-        boardCards.push(Boardsuit4 + Boardnumber4);
       }
 
       if (Boardsuit5 === " " || Boardnumber5 === " ") {
-        const card5 = shuffledBoardCards.pop();
+        const shuffledCards = [...remainingCards].sort(
+          () => 0.5 - Math.random()
+        );
+        const card5 = shuffledCards.pop();
         if (card5) {
           boardCards.push(card5.suit + card5.number);
         }
