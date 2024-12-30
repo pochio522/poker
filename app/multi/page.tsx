@@ -65,6 +65,23 @@ const Page = () => {
   };
 
   const calculateWinRate = async () => {
+    // バリデーション: 必要なカードが揃っているか確認
+    if (
+      !Boardsuit1.trim() ||
+      !Boardnumber1.trim() ||
+      !Boardsuit2.trim() ||
+      !Boardnumber2.trim() ||
+      !Boardsuit3.trim() ||
+      !Boardnumber3.trim() ||
+      !suit1.trim() ||
+      !number1.trim() ||
+      !suit2.trim() ||
+      !number2.trim()
+    ) {
+      alert("必要なカードが揃っていません。");
+      return;
+    }
+
     const myCards = [suit1 + number1, suit2 + number2];
     const enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
     const boardCards = [
@@ -80,7 +97,6 @@ const Page = () => {
     let myWins = 0;
 
     for (let i = 0; i < totalSimulations; i++) {
-      // 手役を評価する（ここでは単純な比較を行います）
       const myHandStrength = evaluateHand([...myCards, ...boardCards]);
       const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
 
