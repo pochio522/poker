@@ -80,12 +80,13 @@ const Page = () => {
   ) => {
     setSuit(suit);
     setNumber(number);
-    updateCardStatus(suit, number);
-    console.log(CardList);
+    // updateCardStatus(suit, number);
+    // console.log(CardList);
   };
 
   const calculateWinRate = async () => {
     // バリデーション: 必要なカードが揃っているか確認
+
     if (
       !Boardsuit1.trim() ||
       !Boardnumber1.trim() ||
@@ -101,6 +102,37 @@ const Page = () => {
       alert("必要なカードが揃っていません。");
       return;
     }
+
+    //値が入っているものはupdateCardStatusで更新する
+    if (suit1.trim() !== " " && number1.trim() !== " ") {
+      updateCardStatus(suit1, number1);
+    }
+    if (suit2.trim() !== " " && number2.trim() !== " ") {
+      updateCardStatus(suit2, number2);
+    }
+    if (Enesuit1.trim() !== " " && Enenumber1.trim() !== " ") {
+      updateCardStatus(Enesuit1, Enenumber1);
+    }
+    if (Enesuit2.trim() !== " " && Enenumber2.trim() !== " ") {
+      updateCardStatus(Enesuit2, Enenumber2);
+    }
+    if (Boardsuit1.trim() !== " " && Boardnumber1.trim() !== " ") {
+      updateCardStatus(Boardsuit1, Boardnumber1);
+    }
+    if (Boardsuit2.trim() !== " " && Boardnumber2.trim() !== " ") {
+      updateCardStatus(Boardsuit2, Boardnumber2);
+    }
+    if (Boardsuit3.trim() !== " " && Boardnumber3.trim() !== " ") {
+      updateCardStatus(Boardsuit3, Boardnumber3);
+    }
+    if (Boardsuit4.trim() !== " " && Boardnumber4.trim() !== " ") {
+      updateCardStatus(Boardsuit4, Boardnumber4);
+    }
+    if (Boardsuit5.trim() !== " " && Boardnumber5.trim() !== " ") {
+      updateCardStatus(Boardsuit5, Boardnumber5);
+    }
+
+    console.log(CardList);
 
     const myCards = [suit1 + number1, suit2 + number2];
     let boardCards = [
