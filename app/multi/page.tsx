@@ -83,7 +83,14 @@ const Page = () => {
     }
 
     const myCards = [suit1 + number1, suit2 + number2];
-    const enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
+    const enemyCards =
+      //相手のカードが選択されている場合
+      Enesuit1 !== " " &&
+      Enenumber1 !== " " &&
+      Enesuit2 !== " " &&
+      Enenumber2 !== " "
+        ? [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2]
+        : [];
     const boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
@@ -95,6 +102,11 @@ const Page = () => {
     // 簡単なモンテカルロシミュレーションの例
     const totalSimulations = 1000;
     let myWins = 0;
+
+    const remainingCards = await supabase
+      .from("card")
+      .select("*")
+      .eq("is_on_table", false);
 
     for (let i = 0; i < totalSimulations; i++) {
       const myHandStrength = evaluateHand([...myCards, ...boardCards]);
