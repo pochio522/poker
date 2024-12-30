@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Card from "../conponents/Card"; //includeみたいなもん Cardという関数を使えるようにする感じ
 import { supabase } from "@/utils/supabase";
+import { CardList } from "./CardList"; // Import CardList
+
 const Page = () => {
   const [suit1, setSuit1] = useState(" "); //自分の1枚目のカード
   const [number1, setNumber1] = useState(" ");
@@ -35,20 +37,37 @@ const Page = () => {
   }, []);
 
   // カードをSupabase上で更新する関数
-  const updateCardStatus = async (suit: string, number: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("card")
-        .update({ is_on_table: false }) // is_on_tableをfalseに更新
-        .match({ suit, number }); // suitとnumberで特定
+  const updateCardStatus = (suit: string, number: string) => {
+    const trimmedSuit = suit.trim();
+    const trimmedNumber = number.trim();
 
-      if (error) {
-        console.error("Error updating card:", error);
-      } else {
-        console.log(`Card updated: ${suit} ${number}`, data);
-      }
-    } catch (err) {
-      console.error("Error updating card status:", err);
+    console.log(`Updating card: ${trimmedSuit} ${trimmedNumber}`);
+    CardList.forEach((card) => {
+      console.log(`CardList entry: ${card.suit} ${card.number}`);
+      console.log(
+        `Suit Unicode comparison: ${card.suit.charCodeAt(
+          0
+        )} vs ${trimmedSuit.charCodeAt(0)}`
+      );
+      console.log(
+        `Number Unicode comparison: ${card.number.charCodeAt(
+          0
+        )} vs ${trimmedNumber.charCodeAt(0)}`
+      );
+    });
+
+    const cardIndex = CardList.findIndex(
+      (card) => card.suit === trimmedSuit && card.number === trimmedNumber
+    );
+
+    if (cardIndex !== -1) {
+      CardList[cardIndex].is_on_table = true;
+      console.log(
+        `Card updated: ${trimmedSuit} ${trimmedNumber}`,
+        CardList[cardIndex]
+      );
+    } else {
+      console.error("Card not found:", trimmedSuit, trimmedNumber);
     }
   };
 
@@ -61,7 +80,8 @@ const Page = () => {
   ) => {
     setSuit(suit);
     setNumber(number);
-    updateCardStatus(suit, number); // Supabaseのデータを更新
+    updateCardStatus(suit, number);
+    console.log(CardList);
   };
 
   const calculateWinRate = async () => {

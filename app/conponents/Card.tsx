@@ -36,7 +36,7 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         <option value="♠">♠</option>
         <option value="♥">♥</option>
         <option value="♦">♦</option>
-        <option value="♣">♣</option>
+        <option value="♣︎">♣</option>
       </select>
       {/* 数字選択用のプルダウン */}
       <label htmlFor="number" className="block mb-1">
