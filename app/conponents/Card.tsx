@@ -12,11 +12,13 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
   //({ suit, setSuit, number, setNumber })親コンポーネントから引き渡される
   //   const [suit, setSuit] = useState(" ");
   //   const [number, setNumber] = useState(" ");
-  const handleSuitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSuitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSuit(event.target.value); // 選択されたスーツに更新
+    console.log(suit);
   };
-  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNumberChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setNumber(event.target.value); // 選択された数字に更新
+    console.log(number);
   };
   const cardoption = (
     <div>
