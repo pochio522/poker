@@ -102,10 +102,47 @@ const Page = () => {
   //   return ["H3", "D4"]; // 例としてハートの3とダイヤの4
   // };
 
-  const evaluateHand = (cards) => {
-    // 手役を評価するためのプレースホルダー
-    // 実際には、ポーカーの手役を評価するロジックを実装する必要があります
-    return Math.random(); // 例としてランダムな強さを返す
+  const evaluateHand = (cards: string[]) => {
+    // カードをスートとランクに分ける
+    const suits = cards.map((card) => card[0]);
+    const ranks = cards.map((card) => card.slice(1));
+
+    // ランクを数値に変換
+    const rankValues = ranks.map((rank) => {
+      if (rank === "A") return 14;
+      if (rank === "K") return 13;
+      if (rank === "Q") return 12;
+      if (rank === "J") return 11;
+      return parseInt(rank, 10);
+    });
+
+    // ランクをソート
+    rankValues.sort((a, b) => a - b);
+
+    // 手役の判定
+    const isFlush = suits.every((suit) => suit === suits[0]);
+    const isStraight = rankValues.every((rank, index) => {
+      if (index === 0) return true;
+      return rank === rankValues[index - 1] + 1;
+    });
+
+    const rankCounts = rankValues.reduce((acc, rank) => {
+      acc[rank] = (acc[rank] || 0) + 1;
+      return acc;
+    }, {});
+
+    const counts = Object.values(rankCounts).sort((a, b) => b - a);
+
+    // 手役の強さを数値で返す
+    if (isFlush && isStraight) return 8; // ストレートフラッシュ
+    if (counts[0] === 4) return 7; // フォーカード
+    if (counts[0] === 3 && counts[1] === 2) return 6; // フルハウス
+    if (isFlush) return 5; // フラッシュ
+    if (isStraight) return 4; // ストレート
+    if (counts[0] === 3) return 3; // スリーカード
+    if (counts[0] === 2 && counts[1] === 2) return 2; // ツーペア
+    if (counts[0] === 2) return 1; // ワンペア
+    return 0; // ハイカード
   };
 
   return (
