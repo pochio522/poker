@@ -35,7 +35,7 @@ const Page = () => {
   }, []);
 
   // カードをSupabase上で更新する関数
-  const updateCardStatus = async (suit, number) => {
+  const updateCardStatus = async (suit: string, number: string) => {
     try {
       const { data, error } = await supabase
         .from("card")
@@ -53,10 +53,59 @@ const Page = () => {
   };
 
   // カードを選択して更新する関数(選んだカードをFALSEにする)
-  const handleCardSelect = (suit, number, setSuit, setNumber) => {
+  const handleCardSelect = (
+    suit: string,
+    number: string,
+    setSuit: (suit: string) => void,
+    setNumber: (number: string) => void
+  ) => {
     setSuit(suit);
     setNumber(number);
     updateCardStatus(suit, number); // Supabaseのデータを更新
+  };
+
+  const calculateWinRate = async () => {
+    const myCards = [suit1 + number1, suit2 + number2];
+    const enemyCards = [Enesuit1 + Enenumber1, Enesuit2 + Enenumber2];
+    const boardCards = [
+      Boardsuit1 + Boardnumber1,
+      Boardsuit2 + Boardnumber2,
+      Boardsuit3 + Boardnumber3,
+      Boardsuit4 + Boardnumber4,
+      Boardsuit5 + Boardnumber5,
+    ];
+
+    // 簡単なモンテカルロシミュレーションの例
+    const totalSimulations = 1000;
+    let myWins = 0;
+
+    for (let i = 0; i < totalSimulations; i++) {
+      // ランダムな敵の手札を生成（実際には全ての可能な手札を考慮する必要があります）
+      // const randomEnemyHand = generateRandomHand();
+
+      // 手役を評価する（ここでは単純な比較を行います）
+      const myHandStrength = evaluateHand([...myCards, ...boardCards]);
+      const enemyHandStrength = evaluateHand([...enemyCards, ...boardCards]);
+
+      if (myHandStrength > enemyHandStrength) {
+        myWins++;
+      }
+    }
+
+    const winRate = (myWins / totalSimulations) * 100;
+    console.log(`推定勝率: ${winRate.toFixed(2)}%`);
+  };
+
+  // const generateRandomHand = () => {
+  //   // ランダムな手札を生成するためのプレースホルダー
+  //   // 実際には、デッキからランダムにカードを選ぶ必要があります
+  //   return ["H3", "D4"]; // 例としてハートの3とダイヤの4
+  // };
+
+  const evaluateHand = (cards) => {
+    // 手役を評価するためのプレースホルダー
+    // 実際には、ポーカーの手役を評価するロジックを実装する必要があります
+    return Math.random(); // 例としてランダムな強さを返す
   };
 
   return (
@@ -68,6 +117,7 @@ const Page = () => {
           gap: "2rem",
         }}
       >
+        <button onClick={calculateWinRate}>勝率計算</button>
         <h1 className="text-3xl font-bold mb-8">My card</h1>
         <h1 className="text-3xl font-bold mb-8">Enemy card</h1>
       </div>
