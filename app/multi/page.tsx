@@ -98,43 +98,37 @@ const Page = () => {
       (card) => card.is_on_table === false
     );
 
+    const totalSimulations = 1000;
     let myWins = 0;
-    let totalScenarios = 0;
 
-    // Estimate opponent's hand range
-    const opponentHandRange = generateOpponentHandRange(remainingCards);
+    for (let i = 0; i < totalSimulations; i++) {
+      // Randomly select opponent's hand
+      const shuffledCards = [...remainingCards].sort(() => 0.5 - Math.random());
+      const enemyCards = [
+        shuffledCards.pop().suit + shuffledCards.pop().number,
+        shuffledCards.pop().suit + shuffledCards.pop().number,
+      ];
 
-    // Consider all possible turn and river combinations
-    for (let i = 0; i < remainingCards.length; i++) {
-      for (let j = i + 1; j < remainingCards.length; j++) {
-        const turnCard = remainingCards[i];
-        const riverCard = remainingCards[j];
+      // Randomly select turn and river cards
+      const turnCard = shuffledCards.pop();
+      const riverCard = shuffledCards.pop();
+      const fullBoard = [
+        ...boardCards,
+        turnCard.suit + turnCard.number,
+        riverCard.suit + riverCard.number,
+      ];
 
-        const fullBoard = [
-          ...boardCards,
-          turnCard.suit + turnCard.number,
-          riverCard.suit + riverCard.number,
-        ];
+      // Evaluate hand strengths
+      const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
+      const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
 
-        // Calculate win probability for each scenario
-        opponentHandRange.forEach((enemyCards) => {
-          const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
-          const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
-
-          console.log(
-            `My hand strength: ${myHandStrength}, Enemy hand strength: ${enemyHandStrength}`
-          );
-
-          if (myHandStrength > enemyHandStrength) {
-            myWins++;
-          }
-          totalScenarios++;
-        });
+      if (myHandStrength > enemyHandStrength) {
+        myWins++;
       }
     }
 
     // Compute overall win rate
-    const winRate = (myWins / totalScenarios) * 100;
+    const winRate = (myWins / totalSimulations) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
   };
 
@@ -154,19 +148,36 @@ const Page = () => {
   const evaluateHand = (cards: string[]) => {
     // カードをスートとランクに分ける
     const suits = cards.map((card) => card[0]);
-    const ranks = cards.map((card) => card.slice(1));
+    const ranks = cards.map((card) => {
+      const rank = card
+        .slice(1)
+        .replace(/[^\dA-Z]/g, "")
+        .trim(); // 数字とアルファベット以外を除去
+      console.log(`Card: ${card}, Extracted Rank: ${rank}`); // 各カードと抽出されたランクをログ出力
+      return rank;
+    });
 
     // ランクを数値に変換
     const rankValues = ranks.map((rank) => {
+      console.log(`Processing rank: ${rank}`); // 各ランクをデバッグ用にログ出力
       if (rank === "A") return 14;
       if (rank === "K") return 13;
       if (rank === "Q") return 12;
       if (rank === "J") return 11;
-      return parseInt(rank, 10);
+      const parsedRank = parseInt(rank, 10);
+      if (isNaN(parsedRank)) {
+        console.error(`Invalid rank encountered: ${rank}`);
+        return 0; // 無効なランクのデフォルト値
+      }
+      return parsedRank;
     });
+
+    console.log(rankValues);
 
     // ランクをソート
     rankValues.sort((a, b) => a - b);
+
+    console.log(rankValues);
 
     // 手役の判定
     const isFlush = suits.every((suit) => suit === suits[0]);
