@@ -126,10 +126,13 @@ const Page = () => {
       return rank === rankValues[index - 1] + 1;
     });
 
-    const rankCounts = rankValues.reduce((acc, rank) => {
-      acc[rank] = (acc[rank] || 0) + 1;
-      return acc;
-    }, {});
+    const rankCounts = rankValues.reduce(
+      (acc: Record<number, number>, rank) => {
+        acc[rank] = (acc[rank] || 0) + 1;
+        return acc;
+      },
+      {} as Record<number, number>
+    );
 
     const counts = Object.values(rankCounts).sort((a, b) => b - a);
 
