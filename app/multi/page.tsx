@@ -21,59 +21,59 @@ const Page = () => {
   const changeNumber2 = (number: string) => {
     setNumber2(number);
   };
-  const [Enesuit1, EnesetSuit1] = useState(" "); //相手の1枚目のカード
+  const [Enesuit1, setEnesuit1] = useState(" "); //相手の1枚目のカード
   const changeEnesuit1 = (suit: string) => {
     setEnesuit1(suit);
   };
-  const [Enenumber1, EnesetNumber1] = useState(" ");
+  const [Enenumber1, setEnenumber1] = useState(" ");
   const changeEnenumber1 = (number: string) => {
     setEnenumber1(number);
   };
-  const [Enesuit2, EnesetSuit2] = useState(" "); //相手の2枚目のカード
+  const [Enesuit2, setEnesuit2] = useState(" "); //相手の2枚目のカード
   const changeEnesuit2 = (suit: string) => {
     setEnesuit2(suit);
   };
-  const [Enenumber2, EnesetNumber2] = useState(" ");
+  const [Enenumber2, setEnenumber2] = useState(" ");
   const changeEnenumber2 = (number: string) => {
     setEnenumber2(number);
   };
-  const [Boardsuit1, BoardsetSuit1] = useState(" "); //ボードの1枚目のカード
+  const [Boardsuit1, setBoardsuit1] = useState(" "); //ボードの1枚目のカード
   const changeBoardsuit1 = (suit: string) => {
     setBoardsuit1(suit);
   };
-  const [Boardnumber1, BoardsetNumber1] = useState(" ");
+  const [Boardnumber1, setBoardnumber1] = useState(" ");
   const changeBoardnumber1 = (number: string) => {
     setBoardnumber1(number);
   };
-  const [Boardsuit2, BoardsetSuit2] = useState(" "); //ボードの2枚目のカード
+  const [Boardsuit2, setBoardsuit2] = useState(" "); //ボードの2枚目のカード
   const changeBoardsuit2 = (suit: string) => {
     setBoardsuit2(suit);
   };
-  const [Boardnumber2, BoardsetNumber2] = useState(" ");
+  const [Boardnumber2, setBoardnumber2] = useState(" ");
   const changeBoardnumber2 = (number: string) => {
     setBoardnumber2(number);
   };
-  const [Boardsuit3, BoardsetSuit3] = useState(" "); //ボードの3枚目のカード
+  const [Boardsuit3, setBoardsuit3] = useState(" "); //ボードの3枚目のカード
   const changeBoardsuit3 = (suit: string) => {
     setBoardsuit3(suit);
   };
-  const [Boardnumber3, BoardsetNumber3] = useState(" ");
+  const [Boardnumber3, setBoardnumber3] = useState(" ");
   const changeBoardnumber3 = (number: string) => {
     setBoardnumber3(number);
   };
-  const [Boardsuit4, BoardsetSuit4] = useState(" "); //ボードの4枚目のカード
+  const [Boardsuit4, setBoardsuit4] = useState(" "); //ボードの4枚目のカード
   const changeBoardsuit4 = (suit: string) => {
     setBoardsuit4(suit);
   };
-  const [Boardnumber4, BoardsetNumber4] = useState(" ");
+  const [Boardnumber4, setBoardnumber4] = useState(" ");
   const changeBoardnumber4 = (number: string) => {
     setBoardnumber4(number);
   };
-  const [Boardsuit5, BoardsetSuit5] = useState(" "); //ボードの5枚目のカード
+  const [Boardsuit5, setBoardsuit5] = useState(" "); //ボードの5枚目のカード
   const changeBoardsuit5 = (suit: string) => {
     setBoardsuit5(suit);
   };
-  const [Boardnumber5, BoardsetNumber5] = useState(" ");
+  const [Boardnumber5, setBoardnumber5] = useState(" ");
   const changeBoardnumber5 = (number: string) => {
     setBoardnumber5(number);
   };
@@ -325,25 +325,17 @@ const Page = () => {
           自分の1枚目のカード*/}
         <Card
           suit={suit1}
-          setSuit={(suit) =>
-            handleCardSelect(suit, number1, setSuit1, setNumber1)
-          }
+          setSuit={changeSuit1}
           number={number1}
-          setNumber={(number) =>
-            handleCardSelect(suit1, number, setSuit1, setNumber1)
-          }
+          setNumber={changeNumber1}
           isUP={true}
         />
         {/* 自分の2枚目のカード*/}
         <Card
           suit={suit2}
-          setSuit={(suit) =>
-            handleCardSelect(suit, number2, setSuit2, setNumber2)
-          }
+          setSuit={(suit) => changeSuit2(suit)}
           number={number2}
-          setNumber={(number) =>
-            handleCardSelect(suit2, number, setSuit2, setNumber2)
-          }
+          setNumber={(number) => changeNumber2(number)}
           isUP={true}
         />
 
@@ -357,25 +349,17 @@ const Page = () => {
         {/* 相手の1枚目のカード*/}
         <Card
           suit={Enesuit1}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Enenumber1, EnesetSuit1, EnesetNumber1)
-          }
+          setSuit={changeEnesuit1}
           number={Enenumber1}
-          setNumber={(number) =>
-            handleCardSelect(Enesuit1, number, EnesetSuit1, EnesetNumber1)
-          }
+          setNumber={changeEnenumber1}
           isUP={true}
         />
         {/* 相手の2枚目のカード*/}
         <Card
           suit={Enesuit2}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Enenumber2, EnesetSuit2, EnesetNumber2)
-          }
+          setSuit={changeEnesuit2}
           number={Enenumber2}
-          setNumber={(number) =>
-            handleCardSelect(Enesuit2, number, EnesetSuit2, EnesetNumber2)
-          }
+          setNumber={changeEnenumber2}
           isUP={true}
         />
       </div>
@@ -390,61 +374,41 @@ const Page = () => {
         {/* ボードの1枚目のカード*/}
         <Card
           suit={Boardsuit1}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Boardnumber1, BoardsetSuit1, BoardsetNumber1)
-          }
+          setSuit={changeBoardsuit1}
           number={Boardnumber1}
-          setNumber={(number) =>
-            handleCardSelect(Boardsuit1, number, BoardsetSuit1, BoardsetNumber1)
-          }
+          setNumber={changeBoardnumber1}
           isUP={false}
         />
         {/* ボードの2枚目のカード*/}
         <Card
           suit={Boardsuit2}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Boardnumber2, BoardsetSuit2, BoardsetNumber2)
-          }
+          setSuit={changeBoardsuit2}
           number={Boardnumber2}
-          setNumber={(number) =>
-            handleCardSelect(Boardsuit2, number, BoardsetSuit2, BoardsetNumber2)
-          }
+          setNumber={changeBoardnumber2}
           isUP={false}
         />
         {/* ボードの3枚目のカード*/}
         <Card
           suit={Boardsuit3}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Boardnumber3, BoardsetSuit3, BoardsetNumber3)
-          }
+          setSuit={changeBoardsuit3}
           number={Boardnumber3}
-          setNumber={(number) =>
-            handleCardSelect(Boardsuit3, number, BoardsetSuit3, BoardsetNumber3)
-          }
+          setNumber={changeBoardnumber3}
           isUP={false}
         />
         {/* ボードの4枚目のカード*/}
         <Card
           suit={Boardsuit4}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Boardnumber4, BoardsetSuit4, BoardsetNumber4)
-          }
+          setSuit={changeBoardsuit4}
           number={Boardnumber4}
-          setNumber={(number) =>
-            handleCardSelect(Boardsuit4, number, BoardsetSuit4, BoardsetNumber4)
-          }
+          setNumber={changeBoardnumber4}
           isUP={false}
         />
         {/* ボードの5枚目のカード*/}
         <Card
           suit={Boardsuit5}
-          setSuit={(suit) =>
-            handleCardSelect(suit, Boardnumber5, BoardsetSuit5, BoardsetNumber5)
-          }
+          setSuit={changeBoardsuit5}
           number={Boardnumber5}
-          setNumber={(number) =>
-            handleCardSelect(Boardsuit5, number, BoardsetSuit5, BoardsetNumber5)
-          }
+          setNumber={changeBoardnumber5}
           isUP={false}
         />
       </div>
