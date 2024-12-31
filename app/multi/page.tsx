@@ -126,6 +126,9 @@ const Page = () => {
           const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
           const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
 
+          console.log(myHandStrength);
+          console.log(enemyHandStrength);
+
           if (myHandStrength > enemyHandStrength) {
             myWins++;
           }
@@ -139,6 +142,7 @@ const Page = () => {
   };
 
   const evaluateHand = (cards: string[]) => {
+    console.log("cards", cards);
     // カードをスートとランクに分ける
     const suits = cards.map((card) => card[0]);
     const ranks = cards.map((card) => {
