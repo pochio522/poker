@@ -6,23 +6,77 @@ import { CardList } from "./CardList"; // Import CardList
 
 const Page = () => {
   const [suit1, setSuit1] = useState(" "); //自分の1枚目のカード
+  const changeSuit1 = (suit: string) => {
+    setSuit1(suit);
+  };
   const [number1, setNumber1] = useState(" ");
+  const changeNumber1 = (number: string) => {
+    setNumber1(number);
+  };
   const [suit2, setSuit2] = useState(" "); //自分の2枚目のカード
+  const changeSuit2 = (suit: string) => {
+    setSuit2(suit);
+  };
   const [number2, setNumber2] = useState(" ");
+  const changeNumber2 = (number: string) => {
+    setNumber2(number);
+  };
   const [Enesuit1, EnesetSuit1] = useState(" "); //相手の1枚目のカード
+  const changeEnesuit1 = (suit: string) => {
+    setEnesuit1(suit);
+  };
   const [Enenumber1, EnesetNumber1] = useState(" ");
+  const changeEnenumber1 = (number: string) => {
+    setEnenumber1(number);
+  };
   const [Enesuit2, EnesetSuit2] = useState(" "); //相手の2枚目のカード
+  const changeEnesuit2 = (suit: string) => {
+    setEnesuit2(suit);
+  };
   const [Enenumber2, EnesetNumber2] = useState(" ");
+  const changeEnenumber2 = (number: string) => {
+    setEnenumber2(number);
+  };
   const [Boardsuit1, BoardsetSuit1] = useState(" "); //ボードの1枚目のカード
+  const changeBoardsuit1 = (suit: string) => {
+    setBoardsuit1(suit);
+  };
   const [Boardnumber1, BoardsetNumber1] = useState(" ");
+  const changeBoardnumber1 = (number: string) => {
+    setBoardnumber1(number);
+  };
   const [Boardsuit2, BoardsetSuit2] = useState(" "); //ボードの2枚目のカード
+  const changeBoardsuit2 = (suit: string) => {
+    setBoardsuit2(suit);
+  };
   const [Boardnumber2, BoardsetNumber2] = useState(" ");
+  const changeBoardnumber2 = (number: string) => {
+    setBoardnumber2(number);
+  };
   const [Boardsuit3, BoardsetSuit3] = useState(" "); //ボードの3枚目のカード
+  const changeBoardsuit3 = (suit: string) => {
+    setBoardsuit3(suit);
+  };
   const [Boardnumber3, BoardsetNumber3] = useState(" ");
+  const changeBoardnumber3 = (number: string) => {
+    setBoardnumber3(number);
+  };
   const [Boardsuit4, BoardsetSuit4] = useState(" "); //ボードの4枚目のカード
+  const changeBoardsuit4 = (suit: string) => {
+    setBoardsuit4(suit);
+  };
   const [Boardnumber4, BoardsetNumber4] = useState(" ");
+  const changeBoardnumber4 = (number: string) => {
+    setBoardnumber4(number);
+  };
   const [Boardsuit5, BoardsetSuit5] = useState(" "); //ボードの5枚目のカード
+  const changeBoardsuit5 = (suit: string) => {
+    setBoardsuit5(suit);
+  };
   const [Boardnumber5, BoardsetNumber5] = useState(" ");
+  const changeBoardnumber5 = (number: string) => {
+    setBoardnumber5(number);
+  };
   useEffect(() => {
     const fetchData = async () => {
       const { data: card, error } = await supabase.from("card").select("*");
