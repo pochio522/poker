@@ -90,39 +90,6 @@ const Page = () => {
     fetchData();
   }, []);
 
-  // カードをSupabase上で更新する関数
-  const updateCardStatus = (suit: string, number: string) => {
-    const trimmedSuit = suit.trim();
-    const trimmedNumber = number.trim();
-
-    const cardIndex = CardList.findIndex(
-      (card) => card.suit === trimmedSuit && card.number === trimmedNumber
-    );
-
-    if (cardIndex !== -1) {
-      CardList[cardIndex].is_on_table = true;
-      console.log(
-        `Card updated: ${trimmedSuit} ${trimmedNumber}`,
-        CardList[cardIndex]
-      );
-    } else {
-      console.error("Card not found:", trimmedSuit, trimmedNumber);
-    }
-  };
-
-  // カードを選択して更新する関数(選んだカードをFALSEにする)
-  const handleCardSelect = (
-    suit: string,
-    number: string,
-    setSuit: (suit: string) => void,
-    setNumber: (number: string) => void
-  ) => {
-    setSuit(suit);
-    setNumber(number);
-    // updateCardStatus(suit, number);
-    // console.log(CardList);
-  };
-
   const calculateWinRate = async () => {
     // 必要なカードの検証
     if (
@@ -197,6 +164,8 @@ const Page = () => {
           console.log(myHandStrength);
           console.log(enemyHandStrength);
 
+          //TODO: 同じ手だった時ハイカードの判定をせずに相手の勝ちになってしまうので修正する
+
           if (myHandStrength > enemyHandStrength) {
             myWins++;
           }
@@ -212,7 +181,8 @@ const Page = () => {
   const evaluateHand = (cards: string[]) => {
     console.log("cards", cards);
     // カードをスートとランクに分ける
-    const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim());
+    //TODO: これを使ってフラッシュの判定をする
+    // const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim());
     const ranks = cards.map((card) => {
       const rank = card
         .slice(1)
