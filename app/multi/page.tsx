@@ -140,6 +140,9 @@ const Page = () => {
           const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
           const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
 
+          console.log(myHandStrength);
+          console.log(enemyHandStrength);
+
           if (myHandStrength > enemyHandStrength) {
             myWins++;
           }
@@ -155,19 +158,19 @@ const Page = () => {
   const evaluateHand = (cards: string[]) => {
     console.log("cards", cards);
     // カードをスートとランクに分ける
-    const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim()); // スートから不要な文字を除去
+    const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim());
     const ranks = cards.map((card) => {
       const rank = card
         .slice(1)
         .replace(/[^\dA-Z]/g, "")
-        .trim(); // ランクから不要な文字を除去
-      console.log(`Card: ${card}, Extracted Rank: ${rank}`); // 各カードと抽出されたランクをログ出力
+        .trim();
+      console.log(`Card: ${card}, Extracted Rank: ${rank}`);
       return rank;
     });
 
     // ランクを数値に変換
     const rankValues = ranks.map((rank) => {
-      console.log(`Processing rank: ${rank}`); // 各ランクをデバッグ用にログ出力
+      console.log(`Processing rank: ${rank}`);
       if (rank === "A") return 14;
       if (rank === "K") return 13;
       if (rank === "Q") return 12;
@@ -175,7 +178,7 @@ const Page = () => {
       const parsedRank = parseInt(rank, 10);
       if (isNaN(parsedRank)) {
         console.error(`Invalid rank encountered: ${rank}`);
-        return 0; // 無効なランクのデフォルト値
+        return 0;
       }
       return parsedRank;
     });
@@ -208,9 +211,10 @@ const Page = () => {
     console.log(rankValues);
 
     // 手役の判定
-    const isFlush = suits.every((suit) => suit === suits[0]);
+    //TODO: フラッシュの判定を実装する
+    const isFlush = false;
 
-    // Check for straight, including the special case of A-2-3-4-5
+    // ストレートの判定
     const isStraight =
       rankValues.every((rank, index) => {
         if (index === 0) return true;
