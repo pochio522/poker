@@ -88,7 +88,7 @@ const Page = () => {
     }
 
     const myCards = [suit1 + number1, suit2 + number2];
-    let boardCards = [
+    const boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
       Boardsuit3 + Boardnumber3,
