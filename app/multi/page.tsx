@@ -70,7 +70,7 @@ const Page = () => {
   };
 
   const calculateWinRate = async () => {
-    // Validate necessary cards
+    // 必要なカードの検証
     if (
       !Boardsuit1.trim() ||
       !Boardnumber1.trim() ||
@@ -102,19 +102,33 @@ const Page = () => {
     let myWins = 0;
 
     for (let i = 0; i < totalSimulations; i++) {
-      // Randomly select opponent's hand
+      // 敵の手札をランダムに選択または設定された値を使用
       const shuffledCards = [...remainingCards].sort(() => 0.5 - Math.random());
-      const card1 = shuffledCards.pop();
-      const card2 = shuffledCards.pop();
+      const card1 =
+        Enesuit1.trim() && Enenumber1.trim()
+          ? { suit: Enesuit1, number: Enenumber1 }
+          : shuffledCards.pop();
+      const card2 =
+        Enesuit2.trim() && Enenumber2.trim()
+          ? { suit: Enesuit2, number: Enenumber2 }
+          : shuffledCards.pop();
+
       if (card1 && card2) {
         const enemyCards = [
           card1.suit + card1.number,
           card2.suit + card2.number,
         ];
 
-        // Randomly select turn and river cards
-        const turnCard = shuffledCards.pop();
-        const riverCard = shuffledCards.pop();
+        // 既存のボードカードを使用またはランダムに選択
+        const turnCard =
+          Boardsuit4 !== " " && Boardnumber4 !== " "
+            ? { suit: Boardsuit4, number: Boardnumber4 }
+            : shuffledCards.pop();
+        const riverCard =
+          Boardsuit5 !== " " && Boardnumber5 !== " "
+            ? { suit: Boardsuit5, number: Boardnumber5 }
+            : shuffledCards.pop();
+
         if (turnCard && riverCard) {
           const fullBoard = [
             ...boardCards,
@@ -122,9 +136,12 @@ const Page = () => {
             riverCard.suit + riverCard.number,
           ];
 
-          // Evaluate hand strengths
+          // 手役の強さを評価
           const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
           const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
+
+          console.log(myHandStrength);
+          console.log(enemyHandStrength);
 
           if (myHandStrength > enemyHandStrength) {
             myWins++;
@@ -133,26 +150,27 @@ const Page = () => {
       }
     }
 
-    // Compute overall win rate
+    // 全体の勝率を計算
     const winRate = (myWins / totalSimulations) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
   };
 
   const evaluateHand = (cards: string[]) => {
+    console.log("cards", cards);
     // カードをスートとランクに分ける
-    const suits = cards.map((card) => card[0]);
+    const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim());
     const ranks = cards.map((card) => {
       const rank = card
         .slice(1)
         .replace(/[^\dA-Z]/g, "")
-        .trim(); // 数字とアルファベット以外を除去
-      console.log(`Card: ${card}, Extracted Rank: ${rank}`); // 各カードと抽出されたランクをログ出力
+        .trim();
+      console.log(`Card: ${card}, Extracted Rank: ${rank}`);
       return rank;
     });
 
     // ランクを数値に変換
     const rankValues = ranks.map((rank) => {
-      console.log(`Processing rank: ${rank}`); // 各ランクをデバッグ用にログ出力
+      console.log(`Processing rank: ${rank}`);
       if (rank === "A") return 14;
       if (rank === "K") return 13;
       if (rank === "Q") return 12;
@@ -160,10 +178,30 @@ const Page = () => {
       const parsedRank = parseInt(rank, 10);
       if (isNaN(parsedRank)) {
         console.error(`Invalid rank encountered: ${rank}`);
-        return 0; // 無効なランクのデフォルト値
+        return 0;
       }
       return parsedRank;
     });
+
+    // Enesuit1とEnenumber1の処理
+    const enemySuit1 = Enesuit1.replace(/[^\dA-Z]/g, "").trim();
+    const enemyNumber1 = Enenumber1.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Enemy Card 1: Suit - ${enemySuit1}, Number - ${enemyNumber1}`);
+
+    // Enesuit2とEnenumber2の処理
+    const enemySuit2 = Enesuit2.replace(/[^\dA-Z]/g, "").trim();
+    const enemyNumber2 = Enenumber2.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Enemy Card 2: Suit - ${enemySuit2}, Number - ${enemyNumber2}`);
+
+    // Boardsuit4とBoardnumber4の処理
+    const boardSuit4 = Boardsuit4.replace(/[^\dA-Z]/g, "").trim();
+    const boardNumber4 = Boardnumber4.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Board Card 4: Suit - ${boardSuit4}, Number - ${boardNumber4}`);
+
+    // Boardsuit5とBoardnumber5の処理
+    const boardSuit5 = Boardsuit5.replace(/[^\dA-Z]/g, "").trim();
+    const boardNumber5 = Boardnumber5.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Board Card 5: Suit - ${boardSuit5}, Number - ${boardNumber5}`);
 
     console.log(rankValues);
 
@@ -173,9 +211,10 @@ const Page = () => {
     console.log(rankValues);
 
     // 手役の判定
-    const isFlush = suits.every((suit) => suit === suits[0]);
+    //TODO: フラッシュの判定を実装する
+    const isFlush = false;
 
-    // Check for straight, including the special case of A-2-3-4-5
+    // ストレートの判定
     const isStraight =
       rankValues.every((rank, index) => {
         if (index === 0) return true;
