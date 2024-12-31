@@ -88,7 +88,7 @@ const Page = () => {
     }
 
     const myCards = [suit1 + number1, suit2 + number2];
-    const boardCards = [
+    let boardCards = [
       Boardsuit1 + Boardnumber1,
       Boardsuit2 + Boardnumber2,
       Boardsuit3 + Boardnumber3,
@@ -112,9 +112,16 @@ const Page = () => {
           card2.suit + card2.number,
         ];
 
-        // Randomly select turn and river cards
-        const turnCard = shuffledCards.pop();
-        const riverCard = shuffledCards.pop();
+        // Use existing board cards or select random ones
+        const turnCard =
+          Boardsuit4.trim() && Boardnumber4.trim()
+            ? { suit: Boardsuit4, number: Boardnumber4 }
+            : shuffledCards.pop();
+        const riverCard =
+          Boardsuit5.trim() && Boardnumber5.trim()
+            ? { suit: Boardsuit5, number: Boardnumber5 }
+            : shuffledCards.pop();
+
         if (turnCard && riverCard) {
           const fullBoard = [
             ...boardCards,
@@ -144,12 +151,12 @@ const Page = () => {
   const evaluateHand = (cards: string[]) => {
     console.log("cards", cards);
     // カードをスートとランクに分ける
-    const suits = cards.map((card) => card[0]);
+    const suits = cards.map((card) => card[0].replace(/[^\dA-Z]/g, "").trim()); // スートから不要な文字を除去
     const ranks = cards.map((card) => {
       const rank = card
         .slice(1)
         .replace(/[^\dA-Z]/g, "")
-        .trim(); // 数字とアルファベット以外を除去
+        .trim(); // ランクから不要な文字を除去
       console.log(`Card: ${card}, Extracted Rank: ${rank}`); // 各カードと抽出されたランクをログ出力
       return rank;
     });
