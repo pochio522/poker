@@ -3,9 +3,10 @@ import React from "react";
 
 type CardProps = {
   suit: string;
-  setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
+  // setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
+  setSuit: (suit: string) => void;
   number: string;
-  setNumber: React.Dispatch<React.SetStateAction<string>>;
+  setNumber: (number: string) => void;
   isUP: boolean; //bool型
 };
 const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
@@ -20,6 +21,7 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
     setNumber(event.target.value); // 選択された数字に更新
     console.log(number);
   };
+
   const cardoption = (
     <div>
       {/*スート選択用のプルダウン*/}
