@@ -70,7 +70,7 @@ const Page = () => {
   };
 
   const calculateWinRate = async () => {
-    // Validate necessary cards
+    // 必要なカードの検証
     if (
       !Boardsuit1.trim() ||
       !Boardnumber1.trim() ||
@@ -102,23 +102,30 @@ const Page = () => {
     let myWins = 0;
 
     for (let i = 0; i < totalSimulations; i++) {
-      // Randomly select opponent's hand
+      // 敵の手札をランダムに選択または設定された値を使用
       const shuffledCards = [...remainingCards].sort(() => 0.5 - Math.random());
-      const card1 = shuffledCards.pop();
-      const card2 = shuffledCards.pop();
+      const card1 =
+        Enesuit1.trim() && Enenumber1.trim()
+          ? { suit: Enesuit1, number: Enenumber1 }
+          : shuffledCards.pop();
+      const card2 =
+        Enesuit2.trim() && Enenumber2.trim()
+          ? { suit: Enesuit2, number: Enenumber2 }
+          : shuffledCards.pop();
+
       if (card1 && card2) {
         const enemyCards = [
           card1.suit + card1.number,
           card2.suit + card2.number,
         ];
 
-        // Use existing board cards or select random ones
+        // 既存のボードカードを使用またはランダムに選択
         const turnCard =
-          Boardsuit4.trim() && Boardnumber4.trim()
+          Boardsuit4 !== " " && Boardnumber4 !== " "
             ? { suit: Boardsuit4, number: Boardnumber4 }
             : shuffledCards.pop();
         const riverCard =
-          Boardsuit5.trim() && Boardnumber5.trim()
+          Boardsuit5 !== " " && Boardnumber5 !== " "
             ? { suit: Boardsuit5, number: Boardnumber5 }
             : shuffledCards.pop();
 
@@ -129,12 +136,9 @@ const Page = () => {
             riverCard.suit + riverCard.number,
           ];
 
-          // Evaluate hand strengths
+          // 手役の強さを評価
           const myHandStrength = evaluateHand([...myCards, ...fullBoard]);
           const enemyHandStrength = evaluateHand([...enemyCards, ...fullBoard]);
-
-          console.log(myHandStrength);
-          console.log(enemyHandStrength);
 
           if (myHandStrength > enemyHandStrength) {
             myWins++;
@@ -143,7 +147,7 @@ const Page = () => {
       }
     }
 
-    // Compute overall win rate
+    // 全体の勝率を計算
     const winRate = (myWins / totalSimulations) * 100;
     console.log(`推定勝率: ${winRate.toFixed(2)}%`);
   };
@@ -175,6 +179,26 @@ const Page = () => {
       }
       return parsedRank;
     });
+
+    // Enesuit1とEnenumber1の処理
+    const enemySuit1 = Enesuit1.replace(/[^\dA-Z]/g, "").trim();
+    const enemyNumber1 = Enenumber1.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Enemy Card 1: Suit - ${enemySuit1}, Number - ${enemyNumber1}`);
+
+    // Enesuit2とEnenumber2の処理
+    const enemySuit2 = Enesuit2.replace(/[^\dA-Z]/g, "").trim();
+    const enemyNumber2 = Enenumber2.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Enemy Card 2: Suit - ${enemySuit2}, Number - ${enemyNumber2}`);
+
+    // Boardsuit4とBoardnumber4の処理
+    const boardSuit4 = Boardsuit4.replace(/[^\dA-Z]/g, "").trim();
+    const boardNumber4 = Boardnumber4.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Board Card 4: Suit - ${boardSuit4}, Number - ${boardNumber4}`);
+
+    // Boardsuit5とBoardnumber5の処理
+    const boardSuit5 = Boardsuit5.replace(/[^\dA-Z]/g, "").trim();
+    const boardNumber5 = Boardnumber5.replace(/[^\dA-Z]/g, "").trim();
+    console.log(`Board Card 5: Suit - ${boardSuit5}, Number - ${boardNumber5}`);
 
     console.log(rankValues);
 
