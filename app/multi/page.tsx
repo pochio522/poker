@@ -2,9 +2,14 @@
 import React, { useEffect, useState } from "react";
 import Card from "../conponents/Card"; //includeみたいなもん Cardという関数を使えるようにする感じ
 import { supabase } from "@/utils/supabase";
+
+import { useRouter } from "next/navigation"; // useRouterをインポート
+
 import { CardList } from "./CardList"; // Import CardList
 
+
 const Page = () => {
+  const router = useRouter(); // useRouterフックを使う
   const [suit1, setSuit1] = useState(" "); //自分の1枚目のカード
   const changeSuit1 = (suit: string) => {
     setSuit1(suit);
@@ -271,6 +276,15 @@ const Page = () => {
 
   return (
     <div className="container mx-auto p-4">
+      {/* 前のページに戻るボタン */}
+      <div className="mb-4">
+        <button
+          onClick={() => router.push("./")} // 特定のURLに遷移
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+        >
+          前のページに戻る
+        </button>
+      </div>
       <div
         style={{
           display: "flex",
