@@ -3,21 +3,25 @@ import React from "react";
 
 type CardProps = {
   suit: string;
-  setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
+  // setSuit: React.Dispatch<React.SetStateAction<string>>; //関数なのでstring型ではダメ
+  setSuit: (suit: string) => void;
   number: string;
-  setNumber: React.Dispatch<React.SetStateAction<string>>;
+  setNumber: (number: string) => void;
   isUP: boolean; //bool型
 };
 const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
   //({ suit, setSuit, number, setNumber })親コンポーネントから引き渡される
   //   const [suit, setSuit] = useState(" ");
   //   const [number, setNumber] = useState(" ");
-  const handleSuitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSuitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSuit(event.target.value); // 選択されたスーツに更新
+    console.log(suit);
   };
-  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNumberChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setNumber(event.target.value); // 選択された数字に更新
+    console.log(number);
   };
+
   const cardoption = (
     <div>
       {/*スート選択用のプルダウン*/}
@@ -33,10 +37,10 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         value={suit}
       >
         <option value="">--スートの選択--</option>
-        <option value="♠">♠</option>
-        <option value="♥">♥</option>
-        <option value="♦">♦</option>
-        <option value="♣">♣</option>
+        <option value="♠︎">♠</option>
+        <option value="♥︎">♥</option>
+        <option value="♦︎">♦</option>
+        <option value="♣︎">♣</option>
       </select>
       {/* 数字選択用のプルダウン */}
       <label htmlFor="number" className="block mb-1">
@@ -54,7 +58,7 @@ const Card = ({ suit, setSuit, number, setNumber, isUP }: CardProps) => {
         <option value="A">A</option> <option value="K">K</option>
         <option value="Q">Q</option>
         <option value="J">J</option>
-        <option value="T">T</option>
+        <option value="10">10</option>
         <option value="9">9</option>
         <option value="8">8</option>
         <option value="7">7</option>
